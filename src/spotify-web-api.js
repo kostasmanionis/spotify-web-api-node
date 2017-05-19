@@ -1672,6 +1672,96 @@ SpotifyWebApi.prototype = {
     }
   },
 
+  play: function(options, callback) {
+    var request = WebApiRequest.builder()
+      .withPath('/v1/me/player/play')
+      .withHeaders({ 'Content-Type' : 'application/json' })
+      .build();
+
+      this._addAccessToken(request, this.getAccessToken());
+      this._addBodyParameters(request, options);
+
+      var promise = this._performRequest(HttpManager.put, request);
+
+      if (callback) {
+        promise.then(function(data) {
+          callback(null, data);
+        }, function(err) {
+          callback(err);
+        });
+      } else {
+        return promise;
+      }
+  },
+
+  pause: function(callback) {
+    var request = WebApiRequest.builder()
+      .withPath('/v1/me/player/pause')
+      .withHeaders({ 'Content-Type' : 'application/json' })
+      .build();
+
+    this._addAccessToken(request, this.getAccessToken());
+    // this._addBodyParameters(request, options);
+
+    var promise = this._performRequest(HttpManager.put, request);
+
+    if (callback) {
+      promise.then(function(data) {
+        callback(null, data);
+      }, function(err) {
+        callback(err);
+      });
+    } else {
+      return promise;
+    }
+  },
+
+  playNext: function(callback) {
+    var request = WebApiRequest.builder()
+    .withPath('/v1/me/player/next')
+    .withHeaders({ 'Content-Type' : 'application/json' })
+    .build();
+
+    this._addAccessToken(request, this.getAccessToken());
+    // this._addBodyParameters(request, options);
+
+    var promise = this._performRequest(HttpManager.post, request);
+
+    if (callback) {
+      promise.then(function(data) {
+        callback(null, data);
+      }, function(err) {
+        callback(err);
+      });
+    } else {
+      return promise;
+    }
+  },
+
+  setVolume: function(volume, callback) {
+    var request = WebApiRequest.builder()
+    .withPath('/v1/me/player/volume')
+    .withHeaders({ 'Content-Type' : 'application/json' })
+    .withQueryParameters({
+      volume_percent: volume
+    })
+    .build();
+
+    this._addAccessToken(request, this.getAccessToken());
+
+    var promise = this._performRequest(HttpManager.put, request);
+
+    if (callback) {
+      promise.then(function(data) {
+        callback(null, data);
+      }, function(err) {
+        callback(err);
+      });
+    } else {
+      return promise;
+    }
+  },
+
   /**
    * Add the current user as a follower of one or more other Spotify users.
    * @param {string[]} userIds The IDs of the users to be followed.
